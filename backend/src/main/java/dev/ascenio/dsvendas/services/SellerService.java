@@ -1,6 +1,7 @@
 package dev.ascenio.dsvendas.services;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,6 @@ public class SellerService {
 	private SellerRepository repository;
 	
 	public List<SellerDTO> findAll() {
-		return repository.findAll().stream().map(SellerDTO::new).toList();
+		return repository.findAll().stream().map(SellerDTO::new).collect(Collectors.toList());
 	}
 }
