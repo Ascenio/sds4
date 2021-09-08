@@ -25,6 +25,9 @@ public class Sale {
 	@JoinColumn(name = "seller_id")
 	private Seller seller;
 	
+	public Sale() {
+	}
+	
 	public Sale(Long id, int visited, int deals, double ammount, LocalDate date, Seller seller) {
 		this.id = id;
 		this.visited = visited;
@@ -52,5 +55,9 @@ public class Sale {
 	
 	public LocalDate getDate() {
 		return date;
+	}
+	
+	public Seller getSeller() {
+		return seller;
 	}
 }
