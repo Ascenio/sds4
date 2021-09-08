@@ -21,6 +21,9 @@ public class Seller {
 	@OneToMany(mappedBy = "seller")
 	private List<Sale> sales;
 	
+	public Seller() {
+	}
+	
 	public Seller(Long id, String name) {
 		this.id = id;
 		this.name = name;
