@@ -1,26 +1,53 @@
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { SalePage } from "types/sale";
+import { formatLocalDate } from "utils/format";
+import { BASE_URL } from "utils/requests";
+
 export default function DataTable() {
-    return (
-        <div className="table-responsive">
-            <table className="table table-striped table-sm">
-                <thead>
-                    <tr>
-                        <th>Data</th>
-                        <th>Vendedor</th>
-                        <th>Clientes visitados</th>
-                        <th>Negócios fechados</th>
-                        <th>Valor</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>22/04/2021</td>
-                        <td>Barry Allen</td>
-                        <td>34</td>
-                        <td>25</td>
-                        <td>15017.00</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>         
-    );
+  const [page, setPage] = useState<SalePage>({
+    first: true,
+    last: true,
+    number: 0,
+    numberOfElements: 0,
+    content: [],
+    empty: true,
+    size: 0,
+  });
+
+  useEffect(() => {
+    (async () => {
+      const response = await axios.get(
+        `${BASE_URL}/sales?page=0&size=20&sort=date,desc`
+      );
+      setPage(response.data);
+    })();
+  }, []);
+
+  return (
+    <div className="table-responsive">
+      <table className="table table-striped table-sm">
+        <thead>
+          <tr>
+            <th>Data</th>
+            <th>Vendedor</th>
+            <th>Clientes visitados</th>
+            <th>Negócios fechados</th>
+            <th>Valor</th>
+          </tr>
+        </thead>
+        <tbody>
+          {page.content.map((content) => (
+            <tr key={content.id}>
+              <td>{formatLocalDate(content.date, "dd/MM/yyyy")}</td>
+              <td>{content.sellerDTO.name}</td>
+              <td>{content.visited}</td>
+              <td>{content.deals}</td>
+              <td>{content.ammount.toFixed(2)}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
 }
